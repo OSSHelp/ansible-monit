@@ -1,0 +1,18 @@
+---
+- name: get lxc containers list
+  shell: |
+    set -o pipefail
+    for c in $(lxc ls --format csv -c n); do lxc config show "$c" | grep -q 'boot.autostart: "true"' && echo "$c: $(lxc config show $c | grep ipv4.address | head -1 | sed 's/.* //')"; done  # noqa 204
+  args:
+    executable: /bin/bash
+  changed_when: false
+  failed_when: false
+  register: monit_lxc_containers_raw
+
+- name: deploy lxc containers config
+  template:
+    src: lxc-containers.j2
+    dest: /etc/monit/conf.d/lxc-containers
+  vars:
+    monit_lxc_containers: "{{ monit_lxc_containers_raw.stdout|default('{}', true)|from_yaml|dict2items }}"
+  notify: monit reload

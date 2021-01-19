@@ -1,0 +1,26 @@
+---
+- name: install required packages
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - software-properties-common
+    state: present
+    update_cache: true
+    cache_valid_time: 86400
+
+- name: add an apt key for osshelp repo
+  apt_key:
+    url: "{{ osshelp_repo_key }}"
+    state: present
+
+- name: add an osshelp repo
+  apt_repository:
+    repo: "{{ osshelp_repo_url }}"
+    state: present
+    filename: "{{ osshelp_repo_filename }}"
+
+- name: pin priority
+  copy:
+    src: apt-preferences
+    dest: /etc/apt/preferences.d/osshelp-900

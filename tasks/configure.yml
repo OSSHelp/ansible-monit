@@ -1,0 +1,50 @@
+---
+- name: populate service facts
+  service_facts:
+
+- name: deploy main config
+  template:
+    src: main.j2
+    dest: /etc/monit/conf.d/main
+  notify: monit restart
+
+- name: check custom.make-hlreport
+  stat:
+    path: /usr/local/sbin/custom.make-hlreport
+  register: monit_hlreport_check
+
+- name: deploy highload config
+  template:
+    src: highload.j2
+    dest: /etc/monit/conf.d/highload
+  when: monit_hlreport_check.stat.exists
+  notify: monit reload
+
+- name: deploy supported services configs
+  template:
+    src: monit_service.j2
+    dest: "/etc/monit/conf.d/{{ monit_service_name }}"
+  vars:
+    monit_service_name: "{{ item.key }}"
+    monit_service_params: "{{ item.value }}"
+  when: item.key ~ '.service' in ansible_facts.services and
+        item.key not in monit_custom_services and
+        ansible_facts.services[item.key ~ '.service'].status == "enabled"
+  notify: monit reload
+  loop: "{{ monit_supported_services|dict2items }}"
+
+- name: deploy custom services configs
+  template:
+    src: monit_service.j2
+    dest: "/etc/monit/conf.d/{{ monit_service_name }}"
+  vars:
+    monit_service_name: "{{ item.key }}"
+    monit_service_params: "{{ item.value }}"
+  notify:
+    - monit syntax check
+    - monit reload
+  loop: "{{ monit_custom_services|dict2items }}"
+
+- name: lxc containers tasks
+  include_tasks: lxc-containers.yml
+  when: "'lxd.service' in ansible_facts.services"

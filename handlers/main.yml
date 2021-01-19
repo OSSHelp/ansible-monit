@@ -1,0 +1,9 @@
+---
+- name: monit syntax check
+  command: monit -t
+
+- name: monit reload
+  service: name=monit state=reloaded enabled=yes
+
+- name: monit restart
+  service: name=monit state=restarted enabled=yes

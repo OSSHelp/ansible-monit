@@ -1,0 +1,10 @@
+set daemon {{ monit_daemon_interval }}
+    with start delay {{ monit_start_delay }}
+
+set httpd port {{ monit_port }} and
+    signature disable
+    use address {{ monit_address }}
+    allow localhost
+{% for host in monit_allow_hosts %}
+    allow {{ host }}
+{% endfor %}

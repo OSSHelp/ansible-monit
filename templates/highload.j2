@@ -1,0 +1,3 @@
+check system {{ monit_hostname }}
+    if loadavg (1min) > {{ monit_highload_la_1m }} then exec /usr/local/sbin/custom.make-hlreport
+    if loadavg (5min) > {{ monit_highload_la_5m }} then exec /usr/local/sbin/custom.make-hlreport

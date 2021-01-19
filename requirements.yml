@@ -1,0 +1,3 @@
+---
+- name: cron
+  src: https://oss.help/ansible/pub/roles/c/2/cron-stable.tar.gz

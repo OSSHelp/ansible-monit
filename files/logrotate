@@ -1,0 +1,10 @@
+/var/log/monit.log {
+  copytruncate
+  rotate 4
+  weekly
+  minsize 1M
+  missingok
+  notifempty
+  compress
+  delaycompress
+}

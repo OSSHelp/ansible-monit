@@ -1,0 +1,4 @@
+{% for container in monit_lxc_containers %}{% if container.value | ipaddr %}check host lxc-{{container.key}} with address {{container.value}}
+    if failed icmp type echo then alert
+
+{% endif %}{% endfor %}

@@ -1,0 +1,8 @@
+---
+- name: install
+  include_tasks: install.yml
+  when: monit_setup == "full" or monit_setup == "install"
+
+- name: configure
+  import_tasks: configure.yml
+  when: monit_setup == "full" or monit_setup == "configure"

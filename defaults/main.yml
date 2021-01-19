@@ -1,0 +1,65 @@
+---
+osshelp_repo_url: "deb https://pkgs.osshelp.ru/ubuntu/ {{ ansible_distribution_release }}-testing main restricted universe multiverse"
+osshelp_repo_key: "https://pkgs.osshelp.ru/public.key"
+osshelp_repo_filename: "osshelp-testing"
+
+monit_setup: full
+monit_hostname: "{{ inventory_hostname }}"
+monit_daemon_interval: 60
+monit_start_delay: 120
+monit_port: 2812
+monit_address: 127.0.0.1
+monit_allow_hosts: []
+
+monit_highload_la_1m: 15
+monit_highload_la_5m: 10
+
+monit_custom_services: {}
+
+monit_supported_services:
+  3proxy: {group: proxy, pid: /var/run/3proxy/3proxy.pid}
+  acct: {group: monitoring, path: /var/log/account/pacct, checks: [{type: size, value: 0, action: restart}]}
+  apache2: {group: web, pid: /var/run/apache2/apache2.pid, checks: [{type: host, host: 127.0.0.1, port: 8080, protocol: http, request: '"/server-status"', action: restart}]}
+  atop: {group: monitoring, pid: /var/run/atop.pid, poll_time: 'not every "0-5 0 * * *"'}
+  bind9: {group: system, pid: /var/run/named/named.pid, checks: [
+    {type: host, host: 127.0.0.1, port: 53, port_type: tcp, protocol: dns, action: restart},
+    {type: host, host: 127.0.0.1, port: 53, port_type: udp, protocol: dns, action: restart}
+  ]}
+  cron: {group: system, pid: /var/run/crond.pid}
+  docker: {group: system, pid: /var/run/docker.pid, checks: [{type: host, host: 127.0.0.1, port: 19323, protocol: http, request: '"/metrics"', action: alert}]}
+  elasticsearch: {group: db, pid: /var/run/elasticsearch/elasticsearch.pid, checks: [{type: host, host: 127.0.0.1, port: 9200, action: restart}]}
+  drone-runner-exec: {group: ci, pid: /var/run/drone-runner-exec/drone-runner-exec.pid, checks: [{type: host, host: 127.0.0.1, port: 19300, port_type: tcp, action: restart}]}
+  fail2ban: {group: security, pid: /var/run/fail2ban/fail2ban.pid, checks: [{type: socket, path: /var/run/fail2ban/fail2ban.sock, action: restart}]}
+  lxcfs: {group: system, pid: /var/run/lxcfs.pid}
+  memcached: {group: databases, pid: /var/run/memcached/memcached.pid, checks: [{type: host, host: 127.0.0.1, port: 11211, protocol: memcache, action: restart}]}
+  minio: {group: services, process_name: minio\s+server, checks: [{type: host, host: 127.0.0.1, port: 9000, port_type: tcp, action: restart}]}
+  mtproxy: {group: web, pid: /var/run/mtproxy/mtproxy.pid, checks: [{type: host, host: 127.0.0.1, port: 18443, port_type: tcp, action: restart}]}
+  mysql: {group: databases, pid: /var/run/mysqld/mysqld.pid, checks: [{type: host, host: 127.0.0.1, port: 3306, protocol: mysql, timeout: 30, action: alert}]}
+  netdata: {group: monitoring, pid: /var/run/netdata.pid, checks: [{type: host, host: 127.0.0.1, port: 19999, action: restart}]}
+  nginx-vts-exporter: {group: monitoring, pid: /var/run/nginx-vts-exporter/pid, checks: [{type: host, host: 127.0.0.1, port: 9913, action: restart}]}
+  nginx: {group: web, pid: /var/run/nginx.pid, checks: [{type: host, host: 127.0.0.1, port: 80, protocol: http, request: '"/nginx_status"', action: restart}]}
+  node_exporter: {group: monitoring, pid: /var/run/node_exporter/pid, checks: [{type: host, host: 127.0.0.1, port: 9100, action: restart}]}
+  mongod: {group: db, pid: /var/run/mongodb/mongod.pid, checks: [{type: host, host: 127.0.0.1, port: 27017, action: alert}]}
+  ntp: {group: system, pid: /var/run/ntpd.pid, checks: [{type: host, host: 127.0.0.1, port: 123, port_type: udp, action: restart}]}
+  opendkim: {group: mail, pid: /var/run/opendkim/opendkim.pid, checks: [{type: host, host: 127.0.0.1, port: 8891, port_type: tcp, action: restart}]}
+  php5.6-fpm: {group: web, pid: /var/run/php/php5.6-fpm.pid}
+  php7.0-fpm: {group: web, pid: /var/run/php/php7.0-fpm.pid}
+  php7.1-fpm: {group: web, pid: /var/run/php/php7.1-fpm.pid}
+  php7.2-fpm: {group: web, pid: /var/run/php/php7.2-fpm.pid}
+  php7.3-fpm: {group: web, pid: /var/run/php/php7.3-fpm.pid}
+  php7.4-fpm: {group: web, pid: /var/run/php/php7.4-fpm.pid}
+  postfix: {group: mail, pid: /var/spool/postfix/pid/master.pid, checks: [{type: host, host: 127.0.0.1, port: 25, protocol: smtp, action: restart}]}
+  proftpd: {group: ftp, pid: /var/run/proftpd.pid, checks: [{type: host, host: 127.0.0.1, port: 21, protocol: ftp, times: 2, cycles: 5, action: restart}]}
+  rabbitmq-server: {group: queues, pid: /var/run/rabbitmq/rabbitmq-server.pid, checks: [{type: host, host: 127.0.0.1, port: 5672, action: alert}]}
+  rabbitmq_exporter: {group: monitoring, pid: /var/run/rabbitmq_exporter/pid, checks: [{type: host, host: 127.0.0.1, port: 9090, action: restart}]}
+  redis-server: {group: databases, pid: /var/run/redis/redis-server.pid, checks: [{type: host, host: 127.0.0.1, port: 6379, action: alert}]}
+  redis_exporter: {group: monitoring, pid: /var/run/redis_exporter/pid, checks: [{type: host, host: 127.0.0.1, port: 9121, action: restart}]}
+  rsyslog: {group: system, pid: /var/run/rsyslogd.pid}
+  script_exporter: {group: monitoring, pid: /var/run/script_exporter/pid, checks: [{type: host, host: 127.0.0.1, port: 9469, action: restart}]}
+  shell2http: {group: system, pid: /var/run/shell2http/shell2http.pid}
+  smartmontools: {group: system, pid: /var/run/smartd.pid}
+  solr: {group: db, pid: /var/solr/solr-8983.pid, checks: [{type: host, host: 127.0.0.1, port: 8983, action: restart}]}
+  sql_exporter: {group: monitoring, pid: /var/run/sql_exporter/sql_exporter.pid, checks: [{type: host, host: 127.0.0.1, port: 9399, times: 2, cycles: 5, action: restart}]}
+  ssh: {group: system, pid: /var/run/sshd.pid, checks: [{type: host, host: 127.0.0.1, port: 22, protocol: ssh, action: restart}]}
+  supervisor: {group: system, pid: /var/run/supervisord.pid, checks: [{type: socket, path: /var/run/supervisor.sock, action: restart}]}
+  blackbox_exporter: {group: monitoring, pid: /var/run/blackbox_exporter/pid, checks: [{type: host, host: 127.0.0.1, port: 9115, action: restart}]}

@@ -1,0 +1,26 @@
+---
+- name: gather required facts
+  setup:
+    gather_subset: [min]
+  when: ansible_distribution_release is not defined
+
+- name: osshelp repo
+  include_tasks: osshelp-repo.yml
+  when: ansible_distribution_release == 'xenial'
+
+- name: install monit
+  apt:
+    name: monit
+    state: present
+    update_cache: yes
+    cache_valid_time: 86400
+
+- name: check service
+  service:
+    name: monit
+    enabled: yes
+
+- name: deploy logrotate config
+  copy:
+    src: logrotate
+    dest: /etc/logrotate.d/monit
