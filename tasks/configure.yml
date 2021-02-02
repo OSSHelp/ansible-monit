@@ -6,7 +6,7 @@
   template:
     src: main.j2
     dest: /etc/monit/conf.d/main
-  notify: monit restart
+  notify: monit reload
 
 - name: check custom.make-hlreport
   stat:
@@ -41,7 +41,6 @@
     monit_service_name: "{{ item.key }}"
     monit_service_params: "{{ item.value }}"
   notify:
-    - monit syntax check
     - monit reload
   loop: "{{ monit_custom_services|dict2items }}"
 
