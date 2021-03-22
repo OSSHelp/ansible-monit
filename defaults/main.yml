@@ -25,6 +25,7 @@ monit_supported_services:
     {type: host, host: 127.0.0.1, port: 53, port_type: tcp, protocol: dns, action: restart},
     {type: host, host: 127.0.0.1, port: 53, port_type: udp, protocol: dns, action: restart}
   ]}
+  consul_exporter: {group: monitoring, pid: /var/run/consul_exporter/pid, checks: [{type: host, host: 127.0.0.1, port: 9107, action: restart}]}
   cron: {group: system, pid: /var/run/crond.pid}
   docker: {group: system, pid: /var/run/docker.pid, checks: [{type: host, host: 127.0.0.1, port: 19323, protocol: http, request: '"/metrics"', action: alert}]}
   elasticsearch: {group: db, pid: /var/run/elasticsearch/elasticsearch.pid, checks: [{type: host, host: 127.0.0.1, port: 9200, action: restart}]}

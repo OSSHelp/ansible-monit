@@ -98,7 +98,7 @@ All serviсes are restarted  by default on unsuccessful availability checks, exc
 
 ## TODO
 
-- Add Focal support. New Ansible version needed. See [issue](https://github.com/ansible/ansible/issues/68536)
+...
 
 ## License
 
