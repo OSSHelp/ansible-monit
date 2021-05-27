@@ -33,6 +33,20 @@
   notify: monit reload
   loop: "{{ monit_supported_services|dict2items }}"
 
+- name: deploy not supported in lxc services configs
+  template:
+    src: monit_service.j2
+    dest: "/etc/monit/conf.d/{{ monit_service_name }}"
+  vars:
+    monit_service_name: "{{ item.key }}"
+    monit_service_params: "{{ item.value }}"
+  when: item.key ~ '.service' in ansible_facts.services and
+        item.key not in monit_custom_services and
+        ansible_facts.services[item.key ~ '.service'].status == "enabled" and
+        ansible_virtualization_type != 'lxc'
+  notify: monit reload
+  loop: "{{ monit_lxc_unsupported_services|dict2items }}"
+
 - name: deploy custom services configs
   template:
     src: monit_service.j2

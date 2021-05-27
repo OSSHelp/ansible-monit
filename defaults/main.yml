@@ -16,6 +16,9 @@ monit_highload_la_5m: 10
 
 monit_custom_services: {}
 
+monit_lxc_unsupported_services:
+  lxcfs: {group: system, pid: /var/run/lxcfs.pid}
+
 monit_supported_services:
   3proxy: {group: proxy, pid: /var/run/3proxy/3proxy.pid}
   acct: {group: monitoring, path: /var/log/account/pacct, checks: [{type: size, value: 0, action: restart}]}
@@ -31,7 +34,6 @@ monit_supported_services:
   elasticsearch: {group: db, pid: /var/run/elasticsearch/elasticsearch.pid, checks: [{type: host, host: 127.0.0.1, port: 9200, action: restart}]}
   drone-runner-exec: {group: ci, pid: /var/run/drone-runner-exec/drone-runner-exec.pid, checks: [{type: host, host: 127.0.0.1, port: 19300, port_type: tcp, action: restart}]}
   fail2ban: {group: security, pid: /var/run/fail2ban/fail2ban.pid, checks: [{type: socket, path: /var/run/fail2ban/fail2ban.sock, action: restart}]}
-  lxcfs: {group: system, pid: /var/run/lxcfs.pid}
   memcached: {group: databases, pid: /var/run/memcached/memcached.pid, checks: [{type: host, host: 127.0.0.1, port: 11211, protocol: memcache, action: restart}]}
   minio: {group: services, process_name: minio\s+server, checks: [{type: host, host: 127.0.0.1, port: 9000, port_type: tcp, action: restart}]}
   mtproxy: {group: web, pid: /var/run/mtproxy/mtproxy.pid, checks: [{type: host, host: 127.0.0.1, port: 18443, port_type: tcp, action: restart}]}
