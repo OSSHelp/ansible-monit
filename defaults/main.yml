@@ -52,6 +52,7 @@ monit_supported_services:
   php7.3-fpm: {group: web, pid: /var/run/php/php7.3-fpm.pid}
   php7.4-fpm: {group: web, pid: /var/run/php/php7.4-fpm.pid}
   php8.0-fpm: {group: web, pid: /var/run/php/php8.0-fpm.pid}
+  php8.1-fpm: {group: web, pid: /var/run/php/php8.1-fpm.pid}
   postfix: {group: mail, pid: /var/spool/postfix/pid/master.pid, checks: [{type: host, host: 127.0.0.1, port: 25, protocol: smtp, action: restart}]}
   proftpd: {group: ftp, pid: /var/run/proftpd.pid, checks: [{type: host, host: 127.0.0.1, port: 21, protocol: ftp, times: 2, cycles: 5, action: restart}]}
   rabbitmq-server: {group: queues, pid: /var/run/rabbitmq/rabbitmq-server.pid, checks: [{type: host, host: 127.0.0.1, port: 5672, action: alert}]}
