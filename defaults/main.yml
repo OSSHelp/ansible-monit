@@ -1,6 +1,6 @@
 ---
-osshelp_repo_url: "deb https://pkgs.osshelp.ru/ubuntu/ {{ ansible_distribution_release }}-testing main restricted universe multiverse"
-osshelp_repo_key: "https://pkgs.osshelp.ru/public.key"
+osshelp_repo_url: "deb https://pkgs.osshelp.io/ubuntu/ {{ ansible_distribution_release }}-testing main restricted universe multiverse"
+osshelp_repo_key: "https://pkgs.osshelp.io/public.key"
 osshelp_repo_filename: "osshelp-testing"
 
 monit_setup: full
