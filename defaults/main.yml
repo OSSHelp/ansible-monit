@@ -55,6 +55,8 @@ monit_supported_services:
   php8.1-fpm: {group: web, pid: /var/run/php/php8.1-fpm.pid}
   postfix: {group: mail, pid: /var/spool/postfix/pid/master.pid, checks: [{type: host, host: 127.0.0.1, port: 25, protocol: smtp, action: restart}]}
   proftpd: {group: ftp, pid: /var/run/proftpd.pid, checks: [{type: host, host: 127.0.0.1, port: 21, protocol: ftp, times: 2, cycles: 5, action: restart}]}
+  promtail: {group: monitoring, pid: /var/run/promtail/pid, checks: [{type: host, host: 127.0.0.1, port: 9080, action: restart}]}
+  loki: {group: monitoring, pid: /var/run/loki/pid, checks: [{type: host, host: 127.0.0.1, port: 9095, action: restart}]}
   rabbitmq-server: {group: queues, pid: /var/run/rabbitmq/rabbitmq-server.pid, checks: [{type: host, host: 127.0.0.1, port: 5672, action: alert}]}
   rabbitmq_exporter: {group: monitoring, pid: /var/run/rabbitmq_exporter/pid, checks: [{type: host, host: 127.0.0.1, port: 9090, action: restart}]}
   redis-server: {group: databases, pid: /var/run/redis/redis-server.pid, checks: [{type: host, host: 127.0.0.1, port: 6379, action: alert}]}
